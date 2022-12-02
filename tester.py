@@ -6,15 +6,8 @@ import time
 from skiplistholder import findElement, insertElement, removeElement, closestKeyAfter, closestKeyBefore, size
 
 
-def test_size():
-    # This function controls the sizes of the test data
-    print("Running test_size")  # Press Ctrl+F8 to toggle the breakpoint.
-    testsizes = [1000, 10000, 100000, 1000000]
-    return testsizes
-
-
 def generate_data(testsizes):
-    # Makes lists of random number tuples
+    # Makes lists of random number tuples (key-value pairs)
     number_of_tests = len(testsizes)
     print(f"generate_data will run {number_of_tests} tests")
     print(f"The test sizes will be: {testsizes}")
@@ -50,7 +43,7 @@ def run_tests(functions, inputlists):
         for list in inputlists:
             times.append(measure_time(function, list))
         graph_times(inputlists, times)
-        time.sleep(1)   # Sleep for 1 second
+        # time.sleep(1)   # Sleep for 1 second
     return True
 
 
@@ -60,24 +53,32 @@ def graph_times(inputlists, times):
 
     x = []
     compare = []
+    max_length = 0
+    max_time = max(times)
     for i in range(len(inputlists)):
         x.append(len(inputlists[i]))
-        compare.append(math.log2(x[i]) * 0.02)
+        max_length = max(max_length, len(inputlists[i]))
     y = times
-    print(f"x = {x}, y = {y}, overlay = {compare}")
-    plt.plot(x, y, color='blue')      # plot the Graph
-    plt.plot(x, compare, color='red')
+    compare = [(((max_time + 0.1)/ math.log2(max_length)) * math.log2(j)) for j in range(2, max_length, 10)]
+    x2 = range(2, max_length, 10)
+    print(f"x = {x}, y = {y}, max time = {max_time + 0.1}")                          # print output values
+    plt.plot(x, y, color='blue', label='Function')      # plot the Graph
+    plt.plot(x2, compare, color='red', label='O(log n)') # plot log2(n) for comparison
     plt.title("Skiplist Time Function")
     plt.xlabel("Number of Elements")
     plt.ylabel("Execution Time (seconds)")
+    axis = plt.gca()
+    axis.get_xaxis().get_major_formatter().set_scientific(False)
+    plt.legend()
     plt.show()
     return True
 
 
-# Press the green button in the gutter to run the script.
+# Press the green button to run the script.
 if __name__ == '__main__':
-    testsizes = test_size()
-    inputlists = generate_data(testsizes)
+    testsizes = [100, 5000, 10000, 100000, 500000]      # This controls the sizes of the test data
+    inputlists = generate_data(testsizes)           # This generates the key-value pairs
     functions = [findElement, insertElement, removeElement, closestKeyAfter, closestKeyBefore]
-    run_tests(functions, inputlists)
+    run_tests(functions, inputlists)                # This tests the functions and graphs results
+
     print("That's all, Folks!")
