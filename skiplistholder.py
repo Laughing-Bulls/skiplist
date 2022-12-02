@@ -12,9 +12,8 @@ def findElement(something):
     for i in range(iterations):
         i = i + i
         i = i ^ 3
-        for i in range(iterations):
-            i = i + i
-            i = i ^ 3
+        for j in range(iterations):
+            j = int(j + i)
     print(len(something))
     print(type(something))
     return True
@@ -27,9 +26,8 @@ def insertElement(something):
         i = i + i
         i = i - 20
         i = i ^ 3
-        for i in range(iterations):
-            i = i + i
-            i = i ^ 3
+        for j in range(iterations):
+            j = int(j + i)
     print(len(something))
     print(type(something))
     return True
@@ -42,9 +40,8 @@ def removeElement(something):
         i = i + i
         i = i * i
         i = i ^ 3
-        for i in range(iterations):
-            i = i + i
-            i = i ^ 3
+        for j in range(iterations):
+            j = int(j + i)
     print(len(something))
     print(type(something))
     return True
@@ -57,9 +54,8 @@ def closestKeyAfter(something):
         i = i + i
         i = i ^ 3
         i = i / (i+1)
-        for i in range(iterations):
-            i = i + i
-            i = i ^ 3
+        for j in range(iterations):
+            j = int(j + i)
     print(len(something))
     print(type(something))
     return True
@@ -72,9 +68,8 @@ def closestKeyBefore(something):
         i = i + i
         i = i ^ 3
         i = i % (i+1) + (i*2)
-        for i in range(iterations):
-            i = i + i
-            i = i ^ 3
+        for j in range(iterations):
+            j = int(j + i)
     print(len(something))
     print(type(something))
     return True
