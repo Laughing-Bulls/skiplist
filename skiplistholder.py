@@ -7,7 +7,7 @@ def size():
 
 def findElement(something):
     print("findElement")
-    for i in range(10000):
+    for i in range(100000):
         i = i * i
     print(len(something))
     print(type(something))
@@ -16,7 +16,7 @@ def findElement(something):
 
 def insertElement(something):
     print("insertElement")
-    for i in range(10000):
+    for i in range(100000):
         i = i + i
     print(len(something))
     print(type(something))
@@ -25,7 +25,7 @@ def insertElement(something):
 
 def removeElement(something):
     print("removeElement")
-    for i in range(10000):
+    for i in range(100000):
         i = i ^ 3
     print(len(something))
     print(type(something))
@@ -34,8 +34,8 @@ def removeElement(something):
 
 def closestKeyAfter(something):
     print("closestKeyAfter")
-    for i in range(10000):
-        i = i / i
+    for i in range(100000):
+        i = i / (i+1)
     print(len(something))
     print(type(something))
     return True
@@ -44,7 +44,7 @@ def closestKeyAfter(something):
 def closestKeyBefore(something):
     print("closestKeyBefore")
     for i in range(10000):
-        i = i % i
+        i = i % (i+1) + (i*2)
     print(len(something))
     print(type(something))
     return True

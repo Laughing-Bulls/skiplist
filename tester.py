@@ -1,14 +1,15 @@
 # This is the Python program to test skiplist.
 import matplotlib.pyplot as plt
+import math
 import random
 import time
-from skiplistholder import findElement, insertElement, removeElement, closestKeyAfter,closestKeyBefore, size
+from skiplistholder import findElement, insertElement, removeElement, closestKeyAfter, closestKeyBefore, size
 
 
 def test_size():
     # This function controls the sizes of the test data
     print("Running test_size")  # Press Ctrl+F8 to toggle the breakpoint.
-    testsizes = [5, 10, 15]
+    testsizes = [1000, 10000, 100000, 1000000]
     return testsizes
 
 
@@ -49,7 +50,7 @@ def run_tests(functions, inputlists):
         for list in inputlists:
             times.append(measure_time(function, list))
         graph_times(inputlists, times)
-        time.sleep(4)   # Sleep for 4 seconds
+        time.sleep(1)   # Sleep for 1 second
     return True
 
 
@@ -58,14 +59,17 @@ def graph_times(inputlists, times):
     print(f"graph_times: {times}")
 
     x = []
+    compare = []
     for i in range(len(inputlists)):
         x.append(len(inputlists[i]))
-    print(x)
+        compare.append(math.log2(x[i]) * 0.002)
     y = times
-    plt.plot(x, y)      # plot the Graph
-    plt.title("Skiplist time function")
+    print(f"x = {x}, y = {y}, overlay = {compare}")
+    plt.plot(x, y, color='blue')      # plot the Graph
+    plt.plot(x, compare, color='red')
+    plt.title("Skiplist Time Function")
     plt.xlabel("Number of Elements")
-    plt.ylabel("Execution Time")
+    plt.ylabel("Execution Time (seconds)")
     plt.show()
     return True
 
