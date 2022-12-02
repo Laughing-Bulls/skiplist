@@ -1,4 +1,5 @@
 # This is a holder program
+import math
 
 
 def size():
@@ -7,8 +8,13 @@ def size():
 
 def findElement(something):
     print("findElement")
-    for i in range(100000):
-        i = i * i
+    iterations = 100 * int(math.log2(len(something)))
+    for i in range(iterations):
+        i = i + i
+        i = i ^ 3
+        for i in range(iterations):
+            i = i + i
+            i = i ^ 3
     print(len(something))
     print(type(something))
     return True
@@ -16,8 +22,14 @@ def findElement(something):
 
 def insertElement(something):
     print("insertElement")
-    for i in range(100000):
+    iterations = 100 * int(math.log2(len(something)))
+    for i in range(iterations):
         i = i + i
+        i = i - 20
+        i = i ^ 3
+        for i in range(iterations):
+            i = i + i
+            i = i ^ 3
     print(len(something))
     print(type(something))
     return True
@@ -25,8 +37,14 @@ def insertElement(something):
 
 def removeElement(something):
     print("removeElement")
-    for i in range(100000):
+    iterations = 100 * int(math.log2(len(something)))
+    for i in range(iterations):
+        i = i + i
+        i = i * i
         i = i ^ 3
+        for i in range(iterations):
+            i = i + i
+            i = i ^ 3
     print(len(something))
     print(type(something))
     return True
@@ -34,8 +52,14 @@ def removeElement(something):
 
 def closestKeyAfter(something):
     print("closestKeyAfter")
-    for i in range(100000):
+    iterations = 100 * int(math.log2(len(something)))
+    for i in range(iterations):
+        i = i + i
+        i = i ^ 3
         i = i / (i+1)
+        for i in range(iterations):
+            i = i + i
+            i = i ^ 3
     print(len(something))
     print(type(something))
     return True
@@ -43,8 +67,14 @@ def closestKeyAfter(something):
 
 def closestKeyBefore(something):
     print("closestKeyBefore")
-    for i in range(10000):
+    iterations = 100 * int(math.log2(len(something)))
+    for i in range(iterations):
+        i = i + i
+        i = i ^ 3
         i = i % (i+1) + (i*2)
+        for i in range(iterations):
+            i = i + i
+            i = i ^ 3
     print(len(something))
     print(type(something))
     return True

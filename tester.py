@@ -62,7 +62,7 @@ def graph_times(inputlists, times):
     compare = []
     for i in range(len(inputlists)):
         x.append(len(inputlists[i]))
-        compare.append(math.log2(x[i]) * 0.002)
+        compare.append(math.log2(x[i]) * 0.02)
     y = times
     print(f"x = {x}, y = {y}, overlay = {compare}")
     plt.plot(x, y, color='blue')      # plot the Graph
