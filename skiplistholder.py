@@ -12,22 +12,25 @@ class SkipListNode:
 class SkipList:
   def __init__(self):
     self.levels = []
-    #self.levels.append(self.__insertLevelAbove(None, None))
-    #self.levels.append(self.__insertLevelAbove(self.levels[0][0], self.levels[0][1]))
+    self.levels.append(self.__insertLevelAbove(None, None))
+    self.levels.append(self.__insertLevelAbove(self.levels[0][0], self.levels[0][1]))
 
     self.length = 0
 
 
-  def size():
+  def size(self):
     return 100
 
 
   def findElement(self, key):
-    print("findElement")
-    iterations = 1000 * int(math.log2(key+1))
-    for i in range(iterations):
-        i =+ 1
-    return True
+    pointer = self.__topLeftElement()
+    while pointer.below != None:
+      pointer = pointer.below
+
+      while pointer.after.key <= key:
+        pointer = pointer.after
+
+    return pointer
 
 
   def insertElement(self, key, value):
@@ -60,6 +63,26 @@ class SkipList:
     for i in range(iterations):
         i =+ 1
     return True
+
+
+  def __topLeftElement(self):
+    lastLevel = len(self.levels) - 1
+    return self.levels[lastLevel][0]
+
+
+  def __insertLevelAbove(self, firstKey, LastKey):
+    plusInfinity  = SkipListNode()
+    minusInfinity = SkipListNode()
+
+    minusInfinity.key   = -math.inf
+    minusInfinity.after = plusInfinity
+    minusInfinity.above = firstKey
+
+    plusInfinity.key    = math.inf
+    plusInfinity.before = minusInfinity
+    plusInfinity.above  = LastKey
+
+    return [minusInfinity, plusInfinity]
 
 
 # spl = SkipList()
