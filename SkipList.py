@@ -10,8 +10,8 @@ class SkipListNode:
 
 class SkipList:
   def __init__(self):
-    self.S0 = self.__invertLevelAbove(None, None)
-    self.S1 = self.__invertLevelAbove(self.S0[0], self.S0[1])
+    self.S0 = self.__insertLevelAbove(None, None)
+    self.S1 = self.__insertLevelAbove(self.S0[0], self.S0[1])
 
     self.length = 0
 
@@ -37,7 +37,7 @@ class SkipList:
   def display(self):
     pass
 
-  def __invertLevelAbove(self, firstKey, LastKey):
+  def __insertLevelAbove(self, firstKey, LastKey):
     plusInfinity  = SkipListNode()
     minusInfinity = SkipListNode()
 
