@@ -9,6 +9,7 @@ class SkipListNode:
     self.above   = None
     self.below   = None
     self.element = None
+    self.key     = None
 
 class SkipList:
   def __init__(self):
@@ -26,7 +27,14 @@ class SkipList:
     pass
 
   def findElement(self, key):
-    pass
+    pointer = self.__topLeftElement()
+    while pointer.below != None:
+      pointer = pointer.below
+
+      while pointer.after.key <= key:
+        pointer = pointer.after
+
+    return pointer
 
   def closestKeyAfter(self, key):
     pass
@@ -44,17 +52,21 @@ class SkipList:
 
       for element in level:
         # TODO: Formate printing elements in one line
-        print(element.element)
+        print(element.key)
+
+  def __topLeftElement(self):
+    lastLevel = len(self.levels) - 1
+    return self.levels[lastLevel][0]
 
   def __insertLevelAbove(self, firstKey, LastKey):
     plusInfinity  = SkipListNode()
     minusInfinity = SkipListNode()
 
-    minusInfinity.element = -math.inf
+    minusInfinity.key = -math.inf
     minusInfinity.after   = plusInfinity
     minusInfinity.above   = firstKey
 
-    plusInfinity.element = math.inf
+    plusInfinity.key = math.inf
     plusInfinity.before  = minusInfinity
     plusInfinity.above   = LastKey
 
