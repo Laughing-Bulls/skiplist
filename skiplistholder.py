@@ -1,64 +1,66 @@
-# This is a holder program
 import math
 
 
-def size():
+class SkipListNode:
+  def __init__(self):
+    self.after   = None
+    self.before  = None
+    self.above   = None
+    self.below   = None
+    self.element = None
+
+class SkipList:
+  def __init__(self):
+    self.levels = []
+    #self.levels.append(self.__insertLevelAbove(None, None))
+    #self.levels.append(self.__insertLevelAbove(self.levels[0][0], self.levels[0][1]))
+
+    self.length = 0
+
+
+  def size():
     return 100
 
 
-def findElement(something):
+  def findElement(self, key):
     print("findElement")
-    iterations = 10 * int(math.log2(something+1))
+    iterations = 1000 * int(math.log2(key+1))
     for i in range(iterations):
-        i = i + i
-        i = i ^ 3
-        for j in range(iterations):
-            j = int(j + i)
+        i =+ 1
     return True
 
 
-def insertElement(something, somethingelse):
+  def insertElement(self, key, value):
     print("insertElement")
-    iterations = 10 * int(math.log2(somethingelse+1))
+    iterations = 1000 * int(math.log2(value+1))
     for i in range(iterations):
-        i = i + i
-        i = i - 20
-        for j in range(iterations):
-            j = int(i)
+        i =+ 1
     return True
 
 
-def removeElement(something):
+  def removeElement(self, key):
     print("removeElement")
-    iterations = 10 * int(math.log2(something+1))
+    iterations = 1000 * int(math.log2(key+1))
     for i in range(iterations):
-        i = i + i
-        i = i * i
-        i = i ^ 3
-        for j in range(iterations):
-            j = int(j + i)
+        i =+ 1
     return True
 
 
-def closestKeyAfter(something):
+  def closestKeyAfter(self, key):
     print("closestKeyAfter")
-    iterations = 10 * int(math.log2(something+1))
+    iterations = 1000 * int(math.log2(key+1))
     for i in range(iterations):
-        i = i + i
-        i = i ^ 3
-        i = i / (i+1)
-        for j in range(iterations):
-            j = int(j + i)
+        i =+ 1
     return True
 
 
-def closestKeyBefore(something):
+  def closestKeyBefore(self, key):
     print("closestKeyBefore")
-    iterations = 10 * int(math.log2(something+1))
+    iterations = 1000 * int(math.log2(key+1))
     for i in range(iterations):
-        i = i + i
-        i = i ^ 3
-        i = i % (i+1) + (i*2)
-        for j in range(iterations):
-            j = int(j + i)
+        i =+ 1
     return True
+
+
+# spl = SkipList()
+# spl.display()

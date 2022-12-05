@@ -4,12 +4,13 @@ import numpy as np
 import math
 import random
 import time
-from skiplistholder import findElement, insertElement, removeElement, closestKeyAfter, closestKeyBefore, size
+from skiplistholder import SkipList
+# from SkipList import findElement, insertElement, removeElement, closestKeyAfter, closestKeyBefore
 
 """STILL NEED TO:
-    1.  Initialize skiplist
-    2.  Refine the graphing function
+    1.  Refine the graphing function
     """
+
 
 def generate_data(testsizes):
     # Make lists of random number tuples (key-value pairs)
@@ -26,31 +27,32 @@ def generate_data(testsizes):
     return inputlists
 
 
-def run_tests(testsizes, inputlists, functions):
+def run_tests(testsizes, inputlists, function_names):
     # Runs the functions passed on the key-value tuples passed to it
-    times = np.zeros((len(functions), len(inputlists)), dtype=object)  # this matrix will hold the times
+    times = np.zeros((len(function_names), len(inputlists)), dtype=object)  # this matrix will hold the times
     list_number = 0
     for list in inputlists:
         print(f"test list length: {len(list)}")
-        # skiplist()   # initialize new skip list  ######################################
+        sl = SkipList()  # instantiate new skip list object
         # fill the skiplist with odd number keys until it is half full
         for i in range(1, 2 * len(list), 2):
-            insertElement(i, 999)
+            sl.insertElement(i, 999)
         for key in list:
             function_number = 0
-            for function in functions:
+            for name in function_names:
+                function = sl.__getattribute__(name)    # get the function from the list of names
                 times[function_number][list_number] += measure_time(function, key)   # add elapsed time
                 function_number += 1
         list_number += 1
 
-    print_table(functions, testsizes, times)
-    # graph_times(functions, testsizes, times)
+    print_table(function_names, testsizes, times)
+    # graph_times(function_names, testsizes, times)
     return True
 
 
 def measure_time(function, key_value):
     # Returns the time required to complete each function
-    if function == insertElement:
+    if function.__name__ == 'insertElement':
         key = [key_value[0], key_value[1]]  # pass key-value pair
     else:
         key = [key_value[0]]  # pass key only
@@ -66,7 +68,7 @@ def print_table(functions, inputsizes, times):
     print(f"\nResults:")
     print(f"Number of Executions           ", inputsizes)
     for i in range(len(functions)):         # print each row of the output
-        print(f"Function {functions[i].__name__:20}:  ", end=" ")
+        print(f"Function {functions[i]:20}:  ", end=" ")
         for j in range(len(times[i])):
             print(f"{times[i][j]:.5} ", end=" ")
         print()
@@ -108,7 +110,7 @@ if __name__ == '__main__':
     testsizes = [100, 200, 400, 800]      # This controls the sizes of the test data
     inputlists = generate_data(testsizes)           # This generates the key-value pairs
 
-    functions = [findElement, insertElement, removeElement, closestKeyAfter, closestKeyBefore]
-    run_tests(testsizes, inputlists, functions)                # This tests the functions and graphs results
+    function_names = ['findElement', 'insertElement', 'removeElement', 'closestKeyAfter', 'closestKeyBefore']
+    run_tests(testsizes, inputlists, function_names)                # This tests the functions and graphs results
 
     print("That's all, Folks!")
