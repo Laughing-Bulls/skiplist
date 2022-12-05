@@ -1,5 +1,7 @@
 import math
 
+# TODO: Add documentation to each method
+
 class SkipListNode:
   def __init__(self):
     self.after   = None
@@ -10,8 +12,9 @@ class SkipListNode:
 
 class SkipList:
   def __init__(self):
-    self.S0 = self.__insertLevelAbove(None, None)
-    self.S1 = self.__insertLevelAbove(self.S0[0], self.S0[1])
+    self.levels = []
+    self.levels.append(self.__insertLevelAbove(None, None))
+    self.levels.append(self.__insertLevelAbove(self.levels[0][0], self.levels[0][1]))
 
     self.length = 0
 
@@ -35,7 +38,13 @@ class SkipList:
     print(self.length)
 
   def display(self):
-    pass
+    for level in self.levels:
+      # TODO: Print level number
+      print("Level --- \n")
+
+      for element in level:
+        # TODO: Formate printing elements in one line
+        print(element.element)
 
   def __insertLevelAbove(self, firstKey, LastKey):
     plusInfinity  = SkipListNode()
@@ -52,4 +61,4 @@ class SkipList:
     return [minusInfinity, plusInfinity]
 
 spl = SkipList()
-spl.size()
+spl.display()
