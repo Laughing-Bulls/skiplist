@@ -60,9 +60,14 @@ class SkipList:
       # TODO: Print level number
       print("Level --- \n")
 
-      for element in level:
+      # Start with the most left element
+      element = level[0]
+
+      while element.after != None:
         # TODO: Formate printing elements in one line
         print(element.key)
+
+        element = element.after
 
   def __topLeftElement(self):
     lastLevel = len(self.levels) - 1
@@ -100,4 +105,5 @@ class SkipList:
 
 spl = SkipList()
 spl.insertElement(1, 'label - 1')
+spl.insertElement(2, 'label - 2')
 spl.display()
