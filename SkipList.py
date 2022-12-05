@@ -27,7 +27,7 @@ class SkipList:
 
     while random.random() > 0.5:
       if pointer.above == None:
-        pointer = p.before
+        pointer = pointer.before
 
       pointer = pointer.above
       element = self.__insertAfterAbove(pointer, element, key, value)
