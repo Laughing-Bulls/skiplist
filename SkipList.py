@@ -17,6 +17,8 @@ class SkipList:
     self.length = 0
     self.topLeftElement = None
     self.__insertTopLevel()
+    self.__insertTopLevel()
+    self.__insertTopLevel()
 
   # insert/replace value
   def insertElement(self, key, value):
@@ -36,9 +38,7 @@ class SkipList:
 
       # TODO: Fix maintaining top-most level
       if math.ceil(math.log(self.length, 2)) < math.ceil(math.log(self.length + 1, 2)):
-        e = self.__insertAfterAbove(None, self.topLeftElement, -math.inf, -math.inf)
-        self.__insertAfterAbove(e, self.topLeftElement.after, math.inf, math.inf)
-        self.topLeftElement = e
+        self.__insertTopLevel()
 
   def removeElement(self, key):
     pass
@@ -63,24 +63,20 @@ class SkipList:
     print(self.length)
 
   def display(self):
-    start = self.topLeftElement
-
-    element = start
+    element = firstElementInLevel = self.topLeftElement
     level = 0
 
-    print('\nLevel (', level, ')', end=' ')
-
     while element != None:
-      if element.key == math.inf:
-        print('', element.key)
-
-        element = start.below
-        start = element
-        level = level + 1
+      if element.key == -math.inf:
         print('\nLevel (', level, ')', end=' ')
-      else:
-        print('', element.key, end=' --- ')
-        element = element.after
+      elif element.key == math.inf:
+        print(element.key)
+        firstElementInLevel = element = firstElementInLevel.below
+        level = level + 1
+        continue
+
+      print('', element.key, end=' --- ')
+      element = element.after
 
   def __insertTopLevel(self):
     self.topLeftElement = self.__insertAfterAbove(None, self.topLeftElement, -math.inf, -math.inf)
