@@ -14,11 +14,14 @@ class SkipListNode:
 
 class SkipList:
   def __init__(self):
-    self.levels = []
-    self.levels.append(self.__insertLevelAbove(None, None))
-    self.levels.append(self.__insertLevelAbove(self.levels[0][0], self.levels[0][1]))
-
     self.length = 0
+
+    e0 = self.__insertAfterAbove(None, None, -math.inf, -math.inf)
+    e1 = self.__insertAfterAbove(e0, None, math.inf, math.inf)
+    e2 = self.__insertAfterAbove(None, e0, -math.inf, -math.inf)
+    e3 = self.__insertAfterAbove(e2, e1, math.inf, math.inf)
+
+    self.topLeftElement = e2
 
   # insert/replace value
   def insertElement(self, key, value):
@@ -26,18 +29,19 @@ class SkipList:
     element = self.__insertAfterAbove(pointer, None, key, value)
 
     while random.random() > 0.5:
-      while pointer.above == None:
+      while pointer and pointer.above == None:
         pointer = pointer.before
 
-      pointer = pointer.above
-      element = self.__insertAfterAbove(pointer, element, key, value)
+      if pointer:
+        pointer = pointer.above
+        element = self.__insertAfterAbove(pointer, element, key, value)
 
 
   def removeElement(self, key):
     pass
 
   def findElement(self, key):
-    pointer = self.__topLeftElement()
+    pointer = self.topLeftElement
     while pointer.below != None:
       pointer = pointer.below
 
@@ -56,54 +60,44 @@ class SkipList:
     print(self.length)
 
   def display(self):
-    for level in self.levels:
-      # TODO: Print level number
-      print("Level --- \n")
+    start = self.topLeftElement
 
-      # Start with the most left element
-      element = level[0]
+    element = start
+    level = 0
 
-      while element.after != None:
-        # TODO: Formate printing elements in one line
-        print(element.key)
+    print('\nLevel (', level, ')', end=' ')
 
+    while element != None:
+      if element.key == math.inf:
+        print('', element.key)
+
+        element = start.below
+        start = element
+        level = level + 1
+        print('\nLevel (', level, ')', end=' ')
+      else:
+        print('', element.key, end=' --- ')
         element = element.after
-
-  def __topLeftElement(self):
-    lastLevel = len(self.levels) - 1
-    return self.levels[lastLevel][0]
 
   def __insertAfterAbove(self, after, above, key, value):
     node = SkipListNode()
 
     node.key   = key
     node.value = value
+    node.before = after
+    node.below = above
 
     if after != None:
-      node.after         = after.after
-      after.after.before = node
-      after.after        = node
+      node.after = after.after
+      after.after = node
 
     if above != None:
-      node.above  = above
-      node.below  = above.above
+      node.above  = above.above
       above.above = node
 
-  def __insertLevelAbove(self, firstKey, LastKey):
-    plusInfinity  = SkipListNode()
-    minusInfinity = SkipListNode()
-
-    minusInfinity.key   = -math.inf
-    minusInfinity.after = plusInfinity
-    minusInfinity.above = firstKey
-
-    plusInfinity.key    = math.inf
-    plusInfinity.before = minusInfinity
-    plusInfinity.above  = LastKey
-
-    return [minusInfinity, plusInfinity]
+    return node
 
 spl = SkipList()
-spl.insertElement(1, 'label - 1')
-spl.insertElement(2, 'label - 2')
+spl.insertElement(1, '1')
+spl.insertElement(2, '2')
 spl.display()
