@@ -15,13 +15,8 @@ class SkipListNode:
 class SkipList:
   def __init__(self):
     self.length = 0
-
-    e0 = self.__insertAfterAbove(None, None, -math.inf, -math.inf)
-    e1 = self.__insertAfterAbove(e0, None, math.inf, math.inf)
-    e2 = self.__insertAfterAbove(None, e0, -math.inf, -math.inf)
-    e3 = self.__insertAfterAbove(e2, e1, math.inf, math.inf)
-
-    self.topLeftElement = e2
+    self.topLeftElement = None
+    self.__insertTopLevel()
 
   # insert/replace value
   def insertElement(self, key, value):
@@ -86,6 +81,10 @@ class SkipList:
       else:
         print('', element.key, end=' --- ')
         element = element.after
+
+  def __insertTopLevel(self):
+    self.topLeftElement = self.__insertAfterAbove(None, self.topLeftElement, -math.inf, -math.inf)
+    self.topLeftElement.before = self.__insertAfterAbove(self.topLeftElement, self.topLeftElement.after, math.inf, math.inf)
 
   def __insertAfterAbove(self, after, above, key, value):
     node = SkipListNode()
