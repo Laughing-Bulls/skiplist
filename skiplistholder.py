@@ -34,34 +34,34 @@ class SkipList:
 
 
   def insertElement(self, key, value):
-    print("insertElement")
-    iterations = 1000 * int(math.log2(value+1))
+    # print("insertElement")
+    iterations = int(math.log2(value+1) * 0.04)
     for i in range(iterations):
-        i =+ 1
+        i += 1
     return True
 
 
   def removeElement(self, key):
-    print("removeElement")
-    iterations = 1000 * int(math.log2(key+1))
+    # print("removeElement")
+    iterations = int(math.log2(key+1) * 0.04)
     for i in range(iterations):
-        i =+ 1
+        i += 1
     return True
 
 
   def closestKeyAfter(self, key):
-    print("closestKeyAfter")
-    iterations = 1000 * int(math.log2(key+1))
+    # print("closestKeyAfter")
+    iterations = int(math.log2(key+1) * 0.04)
     for i in range(iterations):
-        i =+ 1
+        i += 1
     return True
 
 
   def closestKeyBefore(self, key):
-    print("closestKeyBefore")
-    iterations = 1000 * int(math.log2(key+1))
+    # print("closestKeyBefore")
+    iterations = int(math.log2(key+1) * 0.04)
     for i in range(iterations):
-        i =+ 1
+        i += 1
     return True
 
 

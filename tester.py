@@ -4,12 +4,8 @@ import numpy as np
 import math
 import random
 import time
-from skiplistholder import SkipList
+from SkipList import SkipList
 # from SkipList import findElement, insertElement, removeElement, closestKeyAfter, closestKeyBefore
-
-"""STILL NEED TO:
-    1.  Refine the graphing function
-    """
 
 
 def generate_data(testsizes):
@@ -40,9 +36,9 @@ def run_tests(testsizes, inputlists, function_names):
         for key in list:
             function_number = 0
             for name in function_names:
-                # print(name)
+                print(name)     # debugging print
                 function = sl.__getattribute__(name)    # get the function from the list of names
-                newkey = [key[0] + random.randint(0, 10), key[1]]  # different key-value pair for each function
+                newkey = [key[0] + random.randint(0, 100), key[1]]  # different key-value pair for each function
                 times[function_number][list_number] += measure_time(function, newkey)   # add elapsed time
                 function_number += 1
         list_number += 1
@@ -60,7 +56,7 @@ def measure_time(function, key_value):
         key = [key_value[0]]  # pass key only
     start = time.time()  # start timer
     returned = function(*key)       # run function
-    print(f"returned: {returned}, key: {key}")
+    print(f"returned: {returned}, key: {key}")     # debugging print
     end = time.time()    # end timer
     time_elapsed = end - start
     return time_elapsed
@@ -85,19 +81,20 @@ def graph_times(functions, inputsizes, times):
     for i in range(len(functions)):     # plot each function
         plt.plot(inputsizes, times[i], label=functions[i])
 
-    # compute O( n log n) time for comparison
+    # compute n * O(log n) time for comparison
     max_time = np.max(times)            # get maximum time for scaling
     max_test = np.max(inputsizes)       # get maximum value of inputsizes
     compare = [(((max_time + 0.1) / (max_test * math.log2(max_test))) * j * math.log2(j))
                for j in range(2, max_test, 10)]
     x2 = range(2, max_test, 10)
-    plt.plot(x2, compare, color='black', label='O(n log n)')  # plot nlog2(n) for comparison
+    plt.plot(x2, compare, color='black', label='n times O(log n)')  # plot nlog2(n) for comparison
 
     axis = plt.gca()
-    axis.get_xaxis().get_major_formatter().set_scientific(False)
+    plt.setp(axis.get_xticklabels(), rotation=25, horizontalalignment='right')
+    axis.get_xaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
     plt.xlabel("Number of Executions")
-    plt.ylabel("Total Execution Time (seconds)")
-    plt.title("Time Spent Executing x Functions")
+    plt.ylabel("Execution Time (seconds)")
+    plt.title("Time to Execute Each Function x Times")
     plt.legend()
     plt.show()
     return True
@@ -106,7 +103,7 @@ def graph_times(functions, inputsizes, times):
 # Press the green button to run the script.
 if __name__ == '__main__':
 
-    testsizes = [1000, 2500, 4000]      # This controls the sizes of the test data
+    testsizes = [100, 500, 1000, 2500, 5000]      # This controls the sizes of the test data
     inputlists = generate_data(testsizes)           # This generates the key-value pairs
 
     function_names = ['findElement', 'insertElement', 'removeElement', 'closestKeyAfter', 'closestKeyBefore']
