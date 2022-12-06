@@ -8,44 +8,49 @@ from SkipList import SkipList
 # from SkipList import findElement, insertElement, removeElement, closestKeyAfter, closestKeyBefore
 
 
-def generate_data(number_tests, testsizes):
+def generate_keys(number_tests, dictionary_sizes, functions):
     # Make lists of random number tuples (key-value pairs)
-    number_of_tests = len(testsizes)
-    print(f"generate_data creates {number_of_tests} tests, with test sizes of {testsizes}")
-    max_key_sizes = [i * 2 for i in testsizes]   # establish room for twice as many keys as entries
-    inputlists = [[] for i in range(number_of_tests)]
-    for i in range(len(testsizes)):     # for each Skiplist test size
-        for j in range(number_tests):   # generate 1000 random key-value pairs
+    number_of_dictionaries = len(dictionary_sizes)
+    number_of_functions = len(functions)
+    print(f"generate_keys: creates {number_of_dictionaries} tests, with trial sizes of {number_tests}")
+    max_key_sizes = [i * 2 for i in dictionary_sizes]   # establish room for twice as many keys as entries
+    inputlists = [[] for i in range(number_of_dictionaries)]
+    for i in range(number_of_dictionaries):     # for each Skiplist dictionary size
+        for j in range(number_tests * number_of_functions):   # generate random key-value pairs
             key = random.randint(0, max_key_sizes[i])
             value = key + 1     # value is arbitrarily equal to  key+1
             key_value = [key, value]
             inputlists[i].append(key_value)
-        # print(f"input list sizes are: {len(inputlists[i])}")  # debugging print - size of inputlist
+        # print(f"input list sizes are: {len(inputlists[i])}")  # debugging print of size of inputlist
     return inputlists
 
 
-def run_tests(testsizes, inputlists, function_names):
-    # Runs the functions passed on the key-value tuples passed to it
-    times = np.zeros((len(function_names), len(inputlists)), dtype=object)  # this matrix will hold the times
-    list_number = 0
-    for list in inputlists:
-        print(f"number of dictionary entries being filled: {testsizes[list_number]}")
+def run_tests(trialsize, dictionary_sizes, test_values, function_names):
+    # Runs the functions on the test key-value tuples passed to it
+    number_of_functions = len(function_names)
+    times = np.zeros((len(function_names), len(test_values)), dtype=object)  # this matrix will hold the times
+    dictionary_number = 0
+    for dictionary in dictionary_sizes:     # for each dictionary size
+        print(f"Number of dictionary entries being filled: {dictionary}")
         sl = SkipList()  # instantiate new skip list object
         # fill the skiplist with odd number keys until it is half full
-        for i in range(1, 2 * testsizes[list_number], 2):   # fill initial skiplist with odd numbers
+        for i in range(1, 2 * dictionary, 2):   # fill initial skiplist with odd numbers
             sl.insertElement(i, i + 1)
-        for key in list:
+        for j in range(trialsize):
             function_number = 0
-            for name in function_names:                 # cycle through each function
-                # print(f"Skiplist function: {name}, ", end=" ")     # debugging print
-                function = sl.__getattribute__(name)    # get the function from the list of names
-                newkey = [key[0] + random.randint(0, 100), key[1]]  # different key-value pair for each function
-                times[function_number][list_number] += measure_time(function, newkey)   # add elapsed time
+            for operation in function_names:                 # cycle through each operation
+                function = sl.__getattribute__(operation)    # get the function from the list of names
+                # use different key-value pair for each operation
+                random_key = test_values[dictionary_number][j * number_of_functions + function_number]
+                # print(f"Skiplist operation: {operation}, key: {random_key})   # debugging print
+                # add elapsed time to the times matrix
+                times[function_number][dictionary_number] += measure_time(function, random_key)
                 function_number += 1
-        list_number += 1
+        dictionary_number += 1
 
-    print_table(function_names, testsizes, times)
-    graph_times(function_names, testsizes, times)
+    avg_times = (times / trialsize) * 1000  # compute average time and convert to milliseconds
+    print_table(function_names, dictionary_sizes, avg_times)
+    graph_times(function_names, dictionary_sizes, avg_times)
     return True
 
 
@@ -58,6 +63,7 @@ def measure_time(function, key_value):
     # print(f"Key passed: {key}, ", end=" ")  # debugging print
     start = time.time()  # start timer
     returned = function(*key)       # run function
+    # time.sleep(.001)  # sleep for 1 millisecond for debugging
     end = time.time()    # end timer
     time_elapsed = end - start
     # print(f"Value returned: {returned}")  # debugging print
@@ -105,10 +111,12 @@ def graph_times(functions, inputsizes, times):
 # Press the green button to run the script.
 if __name__ == '__main__':
 
-    testsizes = [1000, 5000, 10000, 50000, 100000]      # This controls the sizes of the test data
-    inputlists = generate_data(1000, testsizes)           # This generates 1000 random key-value pairs
-
     function_names = ['findElement', 'insertElement', 'removeElement', 'closestKeyAfter', 'closestKeyBefore']
-    run_tests(testsizes, inputlists, function_names)                # This tests the functions and graphs results
+    dictionary_sizes = [100, 500, 1000, 5000, 10000, 20000]      # This controls the sizes of the test data
+    trialsize = 100
+
+    inputlists = generate_keys(trialsize, dictionary_sizes, function_names)   # This generates random key-value pairs
+
+    run_tests(trialsize, dictionary_sizes, inputlists, function_names)  # This tests the functions and graphs results
 
     print("That's all, Folks!")
