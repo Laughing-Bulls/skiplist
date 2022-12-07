@@ -15,29 +15,28 @@ class SkipListNode:
 class SkipList:
   def __init__(self):
     self.length = 0
+    self.height = 0
     self.topLeftElement = None
-    self.__insertTopLevel()
+
     self.__insertTopLevel()
     self.__insertTopLevel()
 
   # insert/replace value
   def insertElement(self, key, value):
-    pointer     = self.findElement(key)
-    element     = self.__insertAfterAbove(pointer, None, key, value)
-    towerSize   = 0
-    self.length = self.length + 1
+    pointer = self.findElement(key)
+    element = self.__insertAfterAbove(pointer, None, key, value)
 
+    count = 1
     while random.random() > 0.5:
-      while pointer and pointer.above == None:
+      count = count + 1
+      while pointer.above == None:
         pointer = pointer.before
 
-      if pointer:
-        pointer = pointer.above
-        element = self.__insertAfterAbove(pointer, element, key, value)
-        towerSize = towerSize + 1
+      pointer = pointer.above
+      element = self.__insertAfterAbove(pointer, element, key, value)
 
-      # TODO: Fix maintaining top-most level
-      if math.ceil(math.log(self.length, 2)) < math.ceil(math.log(self.length + 1, 2)):
+
+      if count == self.height:
         self.__insertTopLevel()
 
   def removeElement(self, key):
@@ -79,16 +78,17 @@ class SkipList:
       element = element.after
 
   def __insertTopLevel(self):
+    self.height = self.height + 1
     self.topLeftElement = self.__insertAfterAbove(None, self.topLeftElement, -math.inf, -math.inf)
     self.topLeftElement.before = self.__insertAfterAbove(self.topLeftElement, self.topLeftElement.after, math.inf, math.inf)
 
   def __insertAfterAbove(self, after, above, key, value):
     node = SkipListNode()
 
-    node.key   = key
-    node.value = value
+    node.key    = key
+    node.value  = value
     node.before = after
-    node.below = above
+    node.below  = above
 
     if after != None:
       node.after = after.after
