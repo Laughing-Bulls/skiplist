@@ -23,7 +23,7 @@ class SkipList:
 
   # insert/replace value
   def insertElement(self, key, value):
-    foundElement = pointer = self.findElement(key, getValue=False)
+    foundElement = pointer = self.__locateKey(key)
 
     if foundElement.key == key:
       foundElement.value = value
@@ -44,7 +44,7 @@ class SkipList:
         self.__insertTopLevel()
 
   def removeElement(self, key):
-    foundElement = pointer = self.findElement(key, getValue=False)
+    foundElement = pointer = self.__locateKey(key)
 
     while pointer != None:
       pointer.before.after = pointer.after
@@ -57,23 +57,9 @@ class SkipList:
       return 'NOT_FOUND'
 
   def findElement(self, key, getValue=True):
-    pointer = self.topLeftElement
-    while pointer.below != None:
-      pointer = pointer.below
+    element = self.__locateKey(key)
 
-      while pointer.after.key <= key:
-        pointer = pointer.after
-
-    if getValue:
-      return pointer.value
-
-    return pointer
-
-  def closestKeyAfter(self, key):
-    pass
-
-  def closestKeyBefore(self, key):
-    pass
+    return element.value if element else None
 
   def size(self):
     print(self.length)
@@ -95,6 +81,16 @@ class SkipList:
       print('', element.key, '(', element.value, ')', end=' --- ')
       element = element.after
     print('-' * 16)
+
+  def __locateKey(self, key):
+    pointer = self.topLeftElement
+    while pointer.below != None:
+      pointer = pointer.below
+
+      while pointer.after.key <= key:
+        pointer = pointer.after
+
+    return pointer
 
   def __insertTopLevel(self):
     self.height = self.height + 1
