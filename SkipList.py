@@ -72,7 +72,7 @@ class SkipList:
   def display(self):
     print('-' * 16)
     element = firstElementInLevel = self.topLeftElement
-    level = 0
+    level = self.height - 1
 
     while element != None:
       if element.key == -math.inf:
@@ -80,7 +80,7 @@ class SkipList:
       elif element.key == math.inf:
         print(element.key)
         firstElementInLevel = element = firstElementInLevel.below
-        level = level + 1
+        level = level - 1
         continue
 
       print('', element.key, end=' --- ')
