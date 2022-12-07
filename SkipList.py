@@ -83,7 +83,7 @@ class SkipList:
         level = level - 1
         continue
 
-      print('', element.key, end=' --- ')
+      print('', element.key, '(', element.value, ')', end=' --- ')
       element = element.after
     print('-' * 16)
 
@@ -112,17 +112,17 @@ class SkipList:
 
 if __name__ == '__main__':
   spl = SkipList()
-  spl.insertElement(12, '-')
-  spl.insertElement(17, '-')
-  spl.insertElement(20, '-')
-  spl.insertElement(25, '-')
-  spl.insertElement(31, '-')
-  spl.insertElement(38, '-')
-  spl.insertElement(39, '-')
-  spl.insertElement(42, '-')
-  spl.insertElement(44, '-')
-  spl.insertElement(50, '-')
-  spl.insertElement(55, '-')
+  spl.insertElement(12, 234)
+  spl.insertElement(17, 423)
+  spl.insertElement(20, 352)
+  spl.insertElement(25, 764)
+  spl.insertElement(31, 366)
+  spl.insertElement(38, 630)
+  spl.insertElement(39, 819)
+  spl.insertElement(42, 577)
+  spl.insertElement(44, 903)
+  spl.insertElement(50, 792)
+  spl.insertElement(55, 634)
   spl.display()
 
   spl.removeElement(12)
