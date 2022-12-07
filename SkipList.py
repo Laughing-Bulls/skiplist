@@ -40,7 +40,12 @@ class SkipList:
         self.__insertTopLevel()
 
   def removeElement(self, key):
-    pass
+    pointer = self.findElement(key, getValue=False)
+
+    while pointer != None:
+      pointer.before.after = pointer.after
+      pointer.after.before = pointer.before
+      pointer = pointer.above
 
   def findElement(self, key, getValue=True):
     pointer = self.topLeftElement
@@ -65,6 +70,7 @@ class SkipList:
     print(self.length)
 
   def display(self):
+    print('-' * 16)
     element = firstElementInLevel = self.topLeftElement
     level = 0
 
@@ -79,6 +85,7 @@ class SkipList:
 
       print('', element.key, end=' --- ')
       element = element.after
+    print('-' * 16)
 
   def __insertTopLevel(self):
     self.height = self.height + 1
@@ -116,4 +123,7 @@ if __name__ == '__main__':
   spl.insertElement(44, '-')
   spl.insertElement(50, '-')
   spl.insertElement(55, '-')
+  spl.display()
+
+  spl.removeElement(12)
   spl.display()
