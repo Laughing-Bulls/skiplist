@@ -56,8 +56,8 @@ class SkipList:
     else:
       return 'NOT_FOUND'
 
-  def findElement(self, key, getValue=True):
-    element = self.__locateKey(key)
+  def findElement(self, key):
+    element = self.__locateKey(key, exact_match=True)
 
     return element.value if element else None
 
@@ -82,7 +82,7 @@ class SkipList:
       element = element.after
     print('-' * 16)
 
-  def __locateKey(self, key):
+  def __locateKey(self, key, exact_match=False):
     pointer = self.topLeftElement
     while pointer.below != None:
       pointer = pointer.below
@@ -90,7 +90,7 @@ class SkipList:
       while pointer.after.key <= key:
         pointer = pointer.after
 
-    return pointer
+    return None if exact_match and pointer.key != key else pointer
 
   def __insertTopLevel(self):
     self.levels_count = self.levels_count + 1
@@ -117,7 +117,7 @@ class SkipList:
 
 def test_case(message, actual, expacted):
   condition = actual == expacted
-  print(message, '--- Result:', 'PASS' if condition else 'FAIL')
+  print('PASS' if condition else 'FAIL', '--- Test Case:', message)
 
   if not condition:
     print('Failing value:', actual, '\n')
