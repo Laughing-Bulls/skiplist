@@ -9,7 +9,7 @@ class SkipListNode:
     self.before  = None
     self.above   = None
     self.below   = None
-    self.element = None
+    self.value = None
     self.key     = None
 
 class SkipList:
@@ -23,7 +23,7 @@ class SkipList:
 
   # insert/replace value
   def insertElement(self, key, value):
-    pointer = self.findElement(key, getValue=False)
+    foundElement = pointer = self.findElement(key, getValue=False)
     element = self.__insertAfterAbove(pointer, None, key, value)
 
     count = 1
@@ -39,13 +39,22 @@ class SkipList:
       if count == self.height:
         self.__insertTopLevel()
 
+    if foundElement.key == key:
+      return foundElement.value
+
   def removeElement(self, key):
-    pointer = self.findElement(key, getValue=False)
+    foundElement = pointer = self.findElement(key, getValue=False)
 
     while pointer != None:
       pointer.before.after = pointer.after
       pointer.after.before = pointer.before
       pointer = pointer.above
+
+    if foundElement.key == key:
+      # print('----', foundElement.key, key, foundElement.key == key, foundElement.element)
+      return foundElement.value
+    else:
+      return 'NOT_FOUND'
 
   def findElement(self, key, getValue=True):
     pointer = self.topLeftElement
@@ -125,5 +134,12 @@ if __name__ == '__main__':
   spl.insertElement(55, 634)
   spl.display()
 
-  spl.removeElement(12)
+  rm = spl.removeElement(12)
+  print('Remove key', rm)
+  spl.display()
+
+  rm = spl.removeElement(66)
+  print('Remove key', rm)
+
+  spl.insertElement(17, 999)
   spl.display()
