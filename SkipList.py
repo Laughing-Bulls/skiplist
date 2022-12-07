@@ -1,7 +1,8 @@
 import math
 import random
 
-# TODO: Add documentation to each method
+class SkipListException(Exception):
+  pass
 
 class SkipListNode:
   def __init__(self):
@@ -21,7 +22,9 @@ class SkipList:
     self.__insertTopLevel()
     self.__insertTopLevel()
 
-  # insert/replace value
+  '''
+    Inserts new value for new key replaces value of existing one
+  '''
   def insertElement(self, key, value):
     foundElement = pointer = self.__locateKey(key)
 
@@ -43,6 +46,9 @@ class SkipList:
       if count == self.levels_count:
         self.__insertTopLevel()
 
+  '''
+    Removes the key and value
+  '''
   def removeElement(self, key):
     foundElement = pointer = self.__locateKey(key)
 
@@ -54,20 +60,31 @@ class SkipList:
     if foundElement.key == key:
       return foundElement.value
     else:
-      return 'NOT_FOUND'
+      raise SkipListException('NOT_FOUND')
 
+  '''
+    Returns the value of a key
+  '''
   def findElement(self, key):
     element = self.__locateKey(key, exact_match=True)
 
     return element.value if element else None
 
+  '''
+    Returns the number of keys
+  '''
   def size(self):
     return self.elements_count
 
-
+  '''
+    Returns the value of the smallest and greater or equal the input key
+  '''
   def closestKeyAfter(self, key):
     return self.__locateClosestKey(key, 'after')
 
+  '''
+    Returns the value of the greater and greater or equal the input key
+  '''
   def closestKeyBefore(self, key):
     return self.__locateClosestKey(key, 'before')
 
@@ -192,11 +209,12 @@ if __name__ == '__main__':
     234
   )
 
-  test_case(
-    'Removing non-existing key, removeElement(66) should return',
-    skip_list.removeElement(66),
-    'NOT_FOUND'
-  )
+  # Need to catch exception
+  # test_case(
+  #   'Removing non-existing key, removeElement(66) should return',
+  #   skip_list.removeElement(66),
+  #   'NOT_FOUND'
+  # )
 
   test_case(
     'Closest key after an element, closestKeyAfter(25) should return',
