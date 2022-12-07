@@ -23,7 +23,7 @@ class SkipList:
 
   # insert/replace value
   def insertElement(self, key, value):
-    pointer = self.findElement(key)
+    pointer = self.findElement(key, getValue=False)
     element = self.__insertAfterAbove(pointer, None, key, value)
 
     count = 1
@@ -42,13 +42,16 @@ class SkipList:
   def removeElement(self, key):
     pass
 
-  def findElement(self, key):
+  def findElement(self, key, getValue=True):
     pointer = self.topLeftElement
     while pointer.below != None:
       pointer = pointer.below
 
       while pointer.after.key <= key:
         pointer = pointer.after
+
+    if getValue:
+      return pointer.value
 
     return pointer
 
