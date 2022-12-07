@@ -122,7 +122,8 @@ class SkipList:
     if located_element:
       target_element = getattr(located_element, target)
 
-      if target_element:
+      is_not_inf = (target_element.value != math.inf and target_element.value != -math.inf)
+      if target_element and is_not_inf:
         return target_element.key
       else:
         return key
@@ -232,4 +233,10 @@ if __name__ == '__main__':
     'Closest key of none existing key, closestKeyBefore(40) should return',
     skip_list.closestKeyBefore(40),
     None
+  )
+
+  test_case(
+    'Closest key after an element for last key, closestKeyBefore(50) should return',
+    skip_list.closestKeyAfter(50),
+    50
   )
