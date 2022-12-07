@@ -119,32 +119,54 @@ class SkipList:
 
     return node
 
+def test_case(message, condition):
+  print(message, '--- Result:', 'PASS' if condition else 'FAIL')
+
 if __name__ == '__main__':
-  spl = SkipList()
+  skip_list = SkipList()
 
+  test_case(
+    'The size of the SkipList should be zero, skip_list.size() should return 0',
+    skip_list.size() == 0
+  )
 
-  print('-' * 10, 'Insert 10 keys')
-  spl.insertElement(12, 234)
-  spl.insertElement(17, 423)
-  spl.insertElement(20, 352)
-  spl.insertElement(25, 764)
-  spl.insertElement(31, 366)
-  spl.insertElement(38, 630)
-  spl.insertElement(39, 819)
-  spl.insertElement(42, 577)
-  spl.insertElement(44, 903)
-  spl.insertElement(50, 792)
-  spl.display()
+  skip_list.insertElement(12, 234)
+  skip_list.insertElement(17, 423)
+  skip_list.insertElement(20, 352)
+  skip_list.insertElement(25, 764)
+  skip_list.insertElement(31, 366)
+  skip_list.insertElement(38, 630)
+  skip_list.insertElement(39, 819)
+  skip_list.insertElement(42, 577)
+  skip_list.insertElement(44, 903)
+  skip_list.insertElement(50, 792)
 
-  print('-' * 10, 'Update element with key = 17')
-  spl.insertElement(17, 352)
-  spl.display()
+  test_case(
+    'The size of the SkipList, skip_list.size() should return 10',
+    skip_list.size() == 10
+  )
 
-  print('-' * 10, 'Remove element with key = 12')
-  rm = spl.removeElement(12)
-  print('removeElement(), returns:', rm)
-  spl.display()
+  test_case(
+    'Find the value of an element with an existing key, skip_list.findElement(20) should return 352',
+    skip_list.findElement(20) == 352
+  )
 
-  print('-' * 10, 'Remove non-existing key element with key = 66')
-  rm = spl.removeElement(66)
-  print('removeElement(), returns:', rm)
+  test_case(
+    'Find the value of an with a non-existing key, skip_list.findElement(88) should return None',
+    skip_list.findElement(88) == None
+  )
+
+  test_case(
+    'Update element with an existing key, skip_list.insertElement(20) should return 200',
+    skip_list.insertElement(39, 200) == 200
+  )
+
+  test_case(
+    'Remove element with an existing key, skip_list.removeElement(12) should return 234',
+    skip_list.removeElement(12) == 234
+  )
+
+  test_case(
+    'Removing non-existing key, removeElement(66) should return NOT_FOUND',
+    skip_list.removeElement(66) == 'NOT_FOUND'
+  )
