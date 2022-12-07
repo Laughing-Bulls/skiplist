@@ -24,8 +24,12 @@ class SkipList:
   # insert/replace value
   def insertElement(self, key, value):
     foundElement = pointer = self.findElement(key, getValue=False)
-    element = self.__insertAfterAbove(pointer, None, key, value)
 
+    if foundElement.key == key:
+      foundElement.value = value
+      return foundElement.value
+
+    element = self.__insertAfterAbove(pointer, None, key, value)
     count = 1
     while random.random() > 0.5:
       count = count + 1
@@ -39,9 +43,6 @@ class SkipList:
       if count == self.height:
         self.__insertTopLevel()
 
-    if foundElement.key == key:
-      return foundElement.value
-
   def removeElement(self, key):
     foundElement = pointer = self.findElement(key, getValue=False)
 
@@ -51,7 +52,6 @@ class SkipList:
       pointer = pointer.above
 
     if foundElement.key == key:
-      # print('----', foundElement.key, key, foundElement.key == key, foundElement.element)
       return foundElement.value
     else:
       return 'NOT_FOUND'
@@ -121,6 +121,9 @@ class SkipList:
 
 if __name__ == '__main__':
   spl = SkipList()
+
+
+  print('-' * 10, 'Insert 10 keys')
   spl.insertElement(12, 234)
   spl.insertElement(17, 423)
   spl.insertElement(20, 352)
@@ -131,15 +134,17 @@ if __name__ == '__main__':
   spl.insertElement(42, 577)
   spl.insertElement(44, 903)
   spl.insertElement(50, 792)
-  spl.insertElement(55, 634)
   spl.display()
 
+  print('-' * 10, 'Update element with key = 17')
+  spl.insertElement(17, 352)
+  spl.display()
+
+  print('-' * 10, 'Remove element with key = 12')
   rm = spl.removeElement(12)
-  print('Remove key', rm)
+  print('removeElement(), returns:', rm)
   spl.display()
 
+  print('-' * 10, 'Remove non-existing key element with key = 66')
   rm = spl.removeElement(66)
-  print('Remove key', rm)
-
-  spl.insertElement(17, 999)
-  spl.display()
+  print('removeElement(), returns:', rm)
