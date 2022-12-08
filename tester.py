@@ -5,7 +5,6 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 from SkipList import SkipList
-# from skiplistholder import SkipList
 
 
 def generate_keys(number_tests, dictionary_sizes, functions):
@@ -48,8 +47,8 @@ def run_tests(trialsize, dictionary_sizes, test_values, function_names):
         dictionary_number += 1
 
     avg_times = (times / trialsize) * 1000      # compute average time and convert to milliseconds
-    print_table(function_names, dictionary_sizes, avg_times)
-    graph_times(function_names, dictionary_sizes, avg_times)
+    print_table(function_names, dictionary_sizes, avg_times)    # print a table of results
+    graph_times(function_names, dictionary_sizes, avg_times)    # graph the results
     return True
 
 
@@ -91,7 +90,7 @@ def graph_times(functions, inputsizes, times):
     # compute log2(n) time function for comparison
     max_time = np.max(times)            # get maximum time for scaling
     max_test = np.max(inputsizes)       # get maximum value of inputsizes
-    compare = [(((max_time + 0.01) / (math.log2(max_test))) * math.log2(j))
+    compare = [(((max_time + 0.005) / (math.log2(max_test))) * math.log2(j))
                for j in range(2, max_test, 10)]
     x2 = range(2, max_test, 10)
     plt.plot(x2, compare, color='black', label='O(log n)')  # plot O(log n) time for comparison
@@ -100,11 +99,30 @@ def graph_times(functions, inputsizes, times):
     plt.setp(axis.get_xticklabels(), rotation=25, horizontalalignment='right')
     axis.get_xaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
     plt.legend.loc = 'lower right'
-    plt.xlabel("Size of Skiplist")
+    plt.xlabel("Keys in Skiplist")
     plt.ylabel("Execution Time (milliseconds)")
     plt.title("Average Time to Execute Each Function")
     plt.legend()
     plt.show()
+    # individual_graphs(functions, inputsizes, times, x2, compare)  # used to create individual graphs for Summary
+    return True
+
+
+def individual_graphs(functions, inputsizes, times, x2, compare):
+    for i in range(len(functions)):  # plot each function individually
+        plt.figure()
+        plt.plot(inputsizes, times[i], label=functions[i])  # plot function
+        plt.plot(x2, compare, color='black', label='O(log n)')  # plot O(log n) time for comparison
+
+        axis = plt.gca()
+        plt.setp(axis.get_xticklabels(), rotation=25, horizontalalignment='right')
+        axis.get_xaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
+        plt.legend.loc = 'lower right'
+        plt.xlabel("Keys in Skiplist")
+        plt.ylabel("Execution Time (milliseconds)")
+        plt.title("Average Time to Execute Function")
+        plt.legend()
+        plt.show()
     return True
 
 
@@ -112,8 +130,8 @@ def graph_times(functions, inputsizes, times):
 if __name__ == '__main__':
 
     function_names = ['findElement', 'insertElement', 'removeElement', 'closestKeyAfter', 'closestKeyBefore']
-    dictionary_sizes = [50000, 100000, 500000, 1000000, 2500000, 5000000]  # This controls the sizes of the test data
-    trialsize = 1000
+    dictionary_sizes = [50000, 100000, 500000, 1000000, 2500000, 4000000]  # This controls the sizes of the skiplists
+    trialsize = 1000  # This controls the number of trials
 
     inputlists = generate_keys(trialsize, dictionary_sizes, function_names)   # This generates random key-value pairs
 
