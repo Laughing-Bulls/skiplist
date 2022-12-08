@@ -127,10 +127,8 @@ class OrderedDictionary:
 
             if target_element and not is_inf:
                 return target_element.key
-            else:
-                return key
-        else:
-            return None
+
+        return None
 
     def __insertTopLevel(self):
         self.levels_count = self.levels_count + 1
@@ -234,13 +232,13 @@ if __name__ == '__main__':
     test_case(
         'Closest key after an element for last key, closestKeyBefore(12) should return',
         skip_list.closestKeyBefore(12),
-        12
+        None
     )
 
     test_case(
         'Closest key after an element for last key, closestKeyAfter(50) should return',
         skip_list.closestKeyAfter(50),
-        50
+        None
     )
 
     test_case(
