@@ -4,7 +4,7 @@ import random
 import time
 import matplotlib.pyplot as plt
 import numpy as np
-from SkipList import SkipList, DictionaryException
+from OrderedDictionary import OrderedDictionary, DictionaryException
 
 
 def generate_keys(number_tests, dictionary_sizes, functions):
@@ -30,7 +30,7 @@ def run_tests(trialsize, dictionary_sizes, test_values, function_names):
     dictionary_number = 0
     for dictionary in dictionary_sizes:     # for each dictionary size
         print(f"Number of dictionary entries being filled: {dictionary}")
-        sl = SkipList()                     # instantiate new skip list object
+        sl = OrderedDictionary()                     # instantiate new skip list object
         # fill the skiplist with odd number keys until it is half full
         for i in range(1, 2 * dictionary, 2):   # fill initial skiplist with odd numbers
             sl.insertElement(i, i + 1)
