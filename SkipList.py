@@ -200,9 +200,9 @@ if __name__ == '__main__':
   )
 
   test_case(
-    'Update element with an existing key, skip_list.insertElement(20) should return',
+    'Update element with an existing key, skip_list.insertElement(39) should return',
     skip_list.insertElement(39, 200),
-    200
+    819
   )
 
   test_case(
