@@ -3,7 +3,6 @@
    Date created: 11/8/2022
 '''
 from OrderedDictionary import OrderedDictionary, DictionaryException
-from SkipList import SkipList
 
 def getOption():
     option = 0
@@ -66,4 +65,4 @@ def testIntKeyIntValues(dict):
             quit()
         dict.display()
 
-testIntKeyIntValues(SkipList())
+testIntKeyIntValues(OrderedDictionary())
