@@ -1,7 +1,7 @@
 import math
 import random
 
-class SkipListException(Exception):
+class DictionaryException(Exception):
   pass
 
 class SkipListNode:
@@ -29,8 +29,9 @@ class SkipList:
     foundElement = pointer = self.__locateKey(key)
 
     if foundElement.key == key:
+      old_value = foundElement.value
       foundElement.value = value
-      return foundElement.value
+      return old_value
 
     self.elements_count = self.elements_count + 1
     element = self.__insertAfterAbove(pointer, None, key, value)
@@ -60,7 +61,7 @@ class SkipList:
     if foundElement.key == key:
       return foundElement.value
     else:
-      raise SkipListException('NOT_FOUND')
+      raise DictionaryException('NOT_FOUND')
 
   '''
     Returns the value of a key
