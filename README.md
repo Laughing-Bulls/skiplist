@@ -1,6 +1,6 @@
-# SkipList Implementation Project in Python
+# Skiplist Implementation Project in Python
 
-### To construct and utilize the skiplist in **SkipList.py**, use the **SkipListTest.py** program, provided by the professor.
+### To construct and utilize the skiplist in **OrderedDictionary.py**, use the **SkipListTest.py** program, provided by the professor.
 
 ### Performance testing of the skiplist can be run with the program **tester.py**<br>
 
