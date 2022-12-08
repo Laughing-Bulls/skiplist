@@ -3,7 +3,7 @@ from OrderedDictionary import OrderedDictionary, DictionaryException
 def test_case(message, actual, expacted):
     ''' Checks values and print PASS or FAILS'''
     condition = actual == expacted
-    print('PASS' if condition else 'FAIL', '--- Test Case:', message, expacted)
+    print('PASS' if condition else 'FAIL', ':', message, expacted)
 
     if not condition:
         print('Failing value:', actual, '\n')
@@ -60,7 +60,7 @@ if __name__ == '__main__':
             'DictionaryException'
         )
     except DictionaryException:
-        print('PASS --- Test Case: Removing non-existing key, removeElement(66) should return')
+        print('PASS : Removing non-existing key, removeElement(66) should return')
 
     test_case(
         'Closest key after an element, closestKeyAfter(25) should return',
