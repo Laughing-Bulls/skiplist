@@ -2,18 +2,22 @@ import math
 import random
 
 class DictionaryException(Exception):
+    '''Ordered dictionary exception class'''
     pass
 
 class DictionaryElement:
+    '''Dictionary ADT element with extra pointer'''
+
     def __init__(self):
-        self.after    = None
+        self.after  = None
+        self.above  = None
         self.before = None
-        self.above    = None
-        self.below    = None
-        self.value    = None
-        self.key        = None
+        self.below  = None
+        self.value  = None
+        self.key    = None
 
 class OrderedDictionary:
+    '''A SkipList implimntation of a OrderedDictionary'''
     def __init__(self):
         self.elements_count = 0
         self.levels_count = 0
@@ -22,10 +26,8 @@ class OrderedDictionary:
         self.__insertTopLevel()
         self.__insertTopLevel()
 
-    '''
-        Inserts new value for new key replaces value of existing one
-    '''
     def insertElement(self, key, value):
+        '''Inserts new value for new key replaces value of existing one'''
         foundElement = pointer = self.__locateKey(key)
 
         if foundElement.key == key:
@@ -47,10 +49,8 @@ class OrderedDictionary:
             if count == self.levels_count:
                 self.__insertTopLevel()
 
-    '''
-        Removes the key and value
-    '''
     def removeElement(self, key):
+        ''' Removes the key and value '''
         foundElement = pointer = self.__locateKey(key)
 
         while pointer != None:
@@ -63,33 +63,26 @@ class OrderedDictionary:
         else:
             raise DictionaryException('NOT_FOUND')
 
-    '''
-        Returns the value of a key
-    '''
     def findElement(self, key):
+        ''' Returns the value of a key '''
         element = self.__locateKey(key, exact_match=True)
 
         return element.value if element else None
 
-    '''
-        Returns the number of keys
-    '''
     def size(self):
+        ''' Returns the number of keys '''
         return self.elements_count
 
-    '''
-        Returns the value of the smallest and greater or equal the input key
-    '''
     def closestKeyAfter(self, key):
+        ''' Returns the value of the smallest and greater or equal the input key '''
         return self.__locateClosestKey(key, 'after')
 
-    '''
-        Returns the value of the greater and greater or equal the input key
-    '''
     def closestKeyBefore(self, key):
+        ''' Returns the value of the greater and greater or equal the input key '''
         return self.__locateClosestKey(key, 'before')
 
     def display(self):
+        ''' Prints the configurations of the SkipList '''
         print('-' * 16)
         element = firstElementInLevel = self.topLeftElement
         level = self.levels_count - 1
@@ -132,8 +125,12 @@ class OrderedDictionary:
 
     def __insertTopLevel(self):
         self.levels_count = self.levels_count + 1
-        self.topLeftElement = self.__insertAfterAbove(None, self.topLeftElement, -math.inf, -math.inf)
-        self.topLeftElement.before = self.__insertAfterAbove(self.topLeftElement, self.topLeftElement.after, math.inf, math.inf)
+        self.topLeftElement = self.__insertAfterAbove(
+            None, self.topLeftElement, -math.inf, -math.inf
+        )
+        self.topLeftElement.before = self.__insertAfterAbove(
+            self.topLeftElement, self.topLeftElement.after, math.inf, math.inf
+        )
 
     def __insertAfterAbove(self, after, above, key, value):
         node = DictionaryElement()
@@ -152,97 +149,3 @@ class OrderedDictionary:
             above.above = node
 
         return node
-
-def test_case(message, actual, expacted):
-    condition = actual == expacted
-    print('PASS' if condition else 'FAIL', '--- Test Case:', message, expacted)
-
-    if not condition:
-        print('Failing value:', actual, '\n')
-
-if __name__ == '__main__':
-    skip_list = OrderedDictionary()
-
-    test_case(
-        'The size of the SkipList should be zero, skip_list.size() should return',
-        skip_list.size(),
-        0
-    )
-
-    skip_list.insertElement(12, 234)
-    skip_list.insertElement(17, 423)
-    skip_list.insertElement(20, 352)
-    skip_list.insertElement(25, 764)
-    skip_list.insertElement(31, 366)
-    skip_list.insertElement(38, 630)
-    skip_list.insertElement(39, 819)
-    skip_list.insertElement(42, 577)
-    skip_list.insertElement(44, 903)
-    skip_list.insertElement(50, 792)
-
-    test_case(
-        'The size of the SkipList, skip_list.size() should return',
-        skip_list.size(),
-        10
-    )
-
-    test_case(
-        'Find the value of an element with an existing key, skip_list.findElement(20) should return',
-        skip_list.findElement(20),
-        352
-    )
-
-    test_case(
-        'Find the value of an with a non-existing key, skip_list.findElement(88) should return',
-        skip_list.findElement(88),
-        None
-    )
-
-    test_case(
-        'Update element with an existing key, skip_list.insertElement(39) should return',
-        skip_list.insertElement(39, 200),
-        819
-    )
-
-    # Need to catch exception
-    # test_case(
-    #     'Removing non-existing key, removeElement(66) should return',
-    #     skip_list.removeElement(66),
-    #     'NOT_FOUND'
-    # )
-
-    test_case(
-        'Closest key after an element, closestKeyAfter(25) should return',
-        skip_list.closestKeyAfter(25),
-        31
-    )
-
-    test_case(
-        'Closest key before an element, closestKeyBefore(25) should return',
-        skip_list.closestKeyBefore(25),
-        20
-    )
-
-    test_case(
-        'Closest key of none existing key, closestKeyBefore(40) should return',
-        skip_list.closestKeyBefore(40),
-        None
-    )
-
-    test_case(
-        'Closest key after an element for last key, closestKeyBefore(12) should return',
-        skip_list.closestKeyBefore(12),
-        None
-    )
-
-    test_case(
-        'Closest key after an element for last key, closestKeyAfter(50) should return',
-        skip_list.closestKeyAfter(50),
-        None
-    )
-
-    test_case(
-        'Remove element with an existing key, skip_list.removeElement(12) should return',
-        skip_list.removeElement(12),
-        234
-    )
