@@ -123,8 +123,9 @@ class SkipList:
     if located_element:
       target_element = getattr(located_element, target)
 
-      is_not_inf = (target_element.value != math.inf and target_element.value != -math.inf)
-      if target_element and is_not_inf:
+      is_inf = (target_element.value == math.inf or target_element.value == -math.inf)
+
+      if target_element and not is_inf:
         return target_element.key
       else:
         return key
@@ -205,12 +206,6 @@ if __name__ == '__main__':
     819
   )
 
-  test_case(
-    'Remove element with an existing key, skip_list.removeElement(12) should return',
-    skip_list.removeElement(12),
-    234
-  )
-
   # Need to catch exception
   # test_case(
   #   'Removing non-existing key, removeElement(66) should return',
@@ -237,7 +232,19 @@ if __name__ == '__main__':
   )
 
   test_case(
-    'Closest key after an element for last key, closestKeyBefore(50) should return',
+    'Closest key after an element for last key, closestKeyBefore(12) should return',
+    skip_list.closestKeyBefore(12),
+    12
+  )
+
+  test_case(
+    'Closest key after an element for last key, closestKeyAfter(50) should return',
     skip_list.closestKeyAfter(50),
     50
+  )
+
+  test_case(
+    'Remove element with an existing key, skip_list.removeElement(12) should return',
+    skip_list.removeElement(12),
+    234
   )
