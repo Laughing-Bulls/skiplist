@@ -4,7 +4,7 @@ import random
 import time
 import matplotlib.pyplot as plt
 import numpy as np
-from SkipList import SkipList
+from SkipList import SkipList, DictionaryException
 
 
 def generate_keys(number_tests, dictionary_sizes, functions):
@@ -60,7 +60,10 @@ def measure_time(function, key_value):
         key = [key_value[0]]                # pass key only
 
     start = time.perf_counter()  # start timer
-    returned = function(*key)    # run function
+    try:
+        returned = function(*key)    # run function
+    except DictionaryException:    # catch DictionaryException if thrown by removeElement
+        pass
     end = time.perf_counter()    # end timer
     time_elapsed = end - start
     # print(f"Time elapsed: {time_elapsed:.5}")  # debugging print
@@ -130,7 +133,7 @@ def individual_graphs(functions, inputsizes, times, x2, compare):
 if __name__ == '__main__':
 
     function_names = ['findElement', 'insertElement', 'removeElement', 'closestKeyAfter', 'closestKeyBefore']
-    dictionary_sizes = [50000, 100000, 500000, 1000000, 2500000, 4000000]  # This controls the sizes of the skiplists
+    dictionary_sizes = [50000, 100000, 500000, 1000000, 2500000]  # This controls the sizes of the skiplists
     trialsize = 1000  # This controls the number of trials
 
     inputlists = generate_keys(trialsize, dictionary_sizes, function_names)   # This generates random key-value pairs
