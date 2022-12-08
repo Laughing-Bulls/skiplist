@@ -1,4 +1,4 @@
-from OrderedDictionary import OrderedDictionary
+from OrderedDictionary import OrderedDictionary, DictionaryException
 
 def test_case(message, actual, expacted):
     ''' Checks values and print PASS or FAILS'''
@@ -53,12 +53,14 @@ if __name__ == '__main__':
         819
     )
 
-    # Need to catch exception
-    # test_case(
-    #     'Removing non-existing key, removeElement(66) should return',
-    #     skip_list.removeElement(66),
-    #     'NOT_FOUND'
-    # )
+    try:
+        test_case(
+            'Removing non-existing key, removeElement(66) should return',
+            skip_list.removeElement(66),
+            'DictionaryException'
+        )
+    except DictionaryException:
+        print('PASS --- Test Case: Removing non-existing key, removeElement(66) should return')
 
     test_case(
         'Closest key after an element, closestKeyAfter(25) should return',
